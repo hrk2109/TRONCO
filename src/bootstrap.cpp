@@ -59,9 +59,9 @@ Rcpp::List C_get_dag_scores(Rcpp::NumericMatrix dataset,
     // Create output structure
     Rcpp::List scores
       = Rcpp::List::create(Rcpp::Named("marginal.probs") = marginal_probs,
-			   Rcpp::Named("joint.probs")    = joint_probs,
-			   Rcpp::Named("prima.facie.model") = prima_facie_model,
-			   Rcpp::Named("prima.facie.null")  = prima_facie_null);
+                           Rcpp::Named("joint.probs")    = joint_probs,
+                           Rcpp::Named("prima.facie.model") = prima_facie_model,
+                           Rcpp::Named("prima.facie.null")  = prima_facie_null);
     return scores;
 }
 
