@@ -1,3 +1,19 @@
+// -*- Mode: C++ -*-
+
+// bootstrap.cpp
+// TRONCO: a tool for TRanslational ONCOlogy
+//
+// Copyright (c) 2015-2017, Marco Antoniotti, Giulio Caravagna, Luca De Sano,
+// Alex Graudenzi, Giancarlo Mauri, Bud Mishra and Daniele Ramazzotti.
+//
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the GNU GPL v3.0
+// which accompanies this distribution.
+
+  
+#ifndef TRONCO_BOOTSTRAP_CPP
+#define TRONCO_BOOTSTRAP_CPP
+
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -9,15 +25,17 @@ using namespace Rcpp;
 //' @param epos false positive rates
 //' @param eneg false negative rates
 // [[Rcpp::export]]
+
 Rcpp::List C_get_dag_scores(Rcpp::NumericMatrix dataset,
-                    Rcpp::NumericMatrix adj_matrix, 
-                    double epos, 
-                    double eneg ) {
+			    Rcpp::NumericMatrix adj_matrix, 
+			    double epos, 
+			    double eneg) {
     Rcout << "dataset\n" << dataset << "\n";
     Rcout << "adj.matrix \n" << adj_matrix << "\n";
-    Rcout << "epos \n" << epos << "\n";
-    Rcout << "eneg \n" << eneg << "\n";
-    Rcout << "\n";
+    Rcout << "epos\n" << epos << "\n";
+    Rcout << "eneg\n" << eneg << "\n";
+    Rcout << endl;
+    
     Rcpp::NumericMatrix marginal_probs(3, 3);
     Rcpp::NumericMatrix joint_probs(3, 3);
     Rcpp::NumericMatrix prima_facie_model(3, 3);
@@ -31,17 +49,22 @@ Rcpp::List C_get_dag_scores(Rcpp::NumericMatrix dataset,
     
     int row_id = 0;
     for (int i = 0; i < dataset.ncol(); i++) {
-        row_id = rand() % dataset.ncol();
-        sampled_dataset(_, i) = dataset(_, row_id);
+      row_id = rand() % dataset.ncol();
+      sampled_dataset(_, i) = dataset(_, row_id);
     }
 
     Rcout << "sampled_dataset\n" << sampled_dataset << "\n";
 
 
     // Create output structure
-    Rcpp::List scores = Rcpp::List::create(Rcpp::Named("marginal.probs") = marginal_probs,
-        Rcpp::Named("joint.probs") = joint_probs,
-        Rcpp::Named("prima.facie.model") = prima_facie_model,
-        Rcpp::Named("prima.facie.null") = prima_facie_null);
+    Rcpp::List scores
+      = Rcpp::List::create(Rcpp::Named("marginal.probs") = marginal_probs,
+			   Rcpp::Named("joint.probs")    = joint_probs,
+			   Rcpp::Named("prima.facie.model") = prima_facie_model,
+			   Rcpp::Named("prima.facie.null")  = prima_facie_null);
     return scores;
 }
+
+#endif
+
+// end of file -- bootstrap.cpp
